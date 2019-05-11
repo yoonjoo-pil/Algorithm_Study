@@ -2,6 +2,7 @@ class Node:
     def __init__(self,data):
         self.data = data
         self.nextNode = None
+
     def __str__(self):
         string = str(self.data)
         n = self.nextNode
@@ -39,9 +40,6 @@ class Node:
             else:
                 buffer.add(n.nextNode.data)
                 n = n.nextNode    
-        #last item checking
-        if n.data in  buffer:
-            n=None
         return root
               
     def removeDuplication_2(self):
@@ -52,19 +50,13 @@ class Node:
             p1 = self
             flag = False
             while p1 != p2.nextNode:
-                if p1.data == p2.nextNode.data:
+                if p1.data == p2.nextNode.data :
                     p2.nextNode = p2.nextNode.nextNode
                     flag = True
                     break
                 p1 = p1.nextNode
             if not flag:
                 p2 = p2.nextNode
-        #last item
-        p1 = self
-        while p1 != p2:
-            if p1.data == p2.data:
-                p2 = None
-            p1 = p1.nextNode
         return self
     
     def size(self) :
@@ -76,37 +68,35 @@ class Node:
             n = n.nextNode
         return num
     
-    #포인터 2개 써서 좀 더 효율적으로 해보기.
+    def append_list(self, lst) :
+        head = self
+        while head.nextNode :
+            head = head.nextNode
+        head.nextNode = lst 
+
     def search_kth_item(self,k) :
         p1 = self
-        n = self.size()
-        #순차 잡근이 더 빠른 케이스
-        if k > n//2 :
-            num = 1
-            while num < n-k+1 :
-                p1 = p1.nextNode
-                num +=1
-        #뒤에서부터 접근하는 케이스
-        else :
-            p2 = self.nextNode
-            while p2 :
-                if p2.nextNode == None :
-                    break
-                p2 = p2.nextNode.nextNode
-                p1 = p1.nextNode
-            num = n//2
-            while num >= k :
-                p1 = p1.nextNode
-                num -= 1
-        
-        return p1.data
-    #완성 못함
-    def delete_midterm(self) :
-        p1 = self
-        if p1.size()<=2 :
-            return False
-        pass
+        p2 = self
 
+        for i in range(k) :
+            if p1 == None :
+                print("Out of bound")
+                return
+            p1 = p1.nextNode
+        
+        while p1 :
+            p1 = p1.nextNode
+            p2 = p2.nextNode
+        return p2.data
+
+    def delete_midterm(self, node) :
+        if node == None or node.nextNode == None :
+            print("Impossible")
+            return
+        node.data = node.nextNode.data
+        node.nextNode = node.nextNode.nextNode
+        return node
+        
     def divide(self,x) :
         pivot = self
         while pivot :
@@ -121,13 +111,106 @@ class Node:
             pivot = pivot.nextNode
         return self 
     
+    #Linked_list의 head 자체가 변경되지는 않는다.
+    def divide_2(self,x) :
+        n = self
+        head = self
+        tail = self
+        while n :
+            next_node = n.nextNode
+            if n.data < x :
+                n.nextNode = head
+                head = n
+            else :
+                tail.nextNode = n
+                tail = n
+            n = next_node
+
+        tail.nextNode = None
+        return head
+
     def sum_of_lists(self,lst1, lst2) :
         n1, n2 = lst1, lst2
-        temp = n1.data + n2.data
-        if temp >= 10 :
-            sum_lst = Node(temp%10)
-            temp = temp//10
-        else :
-            sum_lst = Node(temp)
+        sum_lst = Node((n1.data + n2.data) % 10)
+        temp = (n1.data + n2.data) // 10
+        n1 = n1.nextNode
+        n2 = n2.nextNode
+        while n1 :
+            if not n2 :
+                print("Check to inputs")
+                return
+            n_term = n1.data + n2.data + temp
+            temp, value =n_term // 10, n_term % 10
+            sum_lst.appendToTail(value)
+
+            n1 = n1.nextNode
+            n2 = n2.nextNode
         
-        pass
+        if temp :
+            sum_lst.appendToTail(temp)
+        return sum_lst
+
+    def check_palindrome(self) :
+        slow, fast = self, self.nextNode
+        stack = []
+        while fast :
+            stack.append(slow.data)
+            if not fast.nextNode :
+                break
+            fast = fast.nextNode.nextNode
+            slow = slow.nextNode
+        
+        slow = slow.nextNode
+        while slow :
+            item = stack.pop()
+            if item != slow.data :
+                return False
+            slow = slow.nextNode
+        return True
+
+    def find_intersection(self, node1, node2) :
+        n1, n2 = node1, node2
+        #check intersection
+        while n1.nextNode or n2.nextNode :
+            if n1.nextNode :
+                n1 = n1.nextNode
+            if n2.nextNode :
+                n2 = n2.nextNode
+        
+        if n1 != n2 :
+            return False
+        #find intersection
+        n1, n2 = node1, node2 
+        size1 = n1.size()
+        size2 = n2.size()
+        if size1 > size2 :
+            for i in range(size1-size2, 0, -1) :
+                n1 = n1.nextNode
+        else :
+            for i in range(size2-size1, 0, -1) :
+                n2 = n2.nextNode
+        
+        while n1 :
+            if n1 == n2 :
+                return n1
+            n1 = n1.nextNode
+            n2 = n2.nextNode
+    
+    def find_loop(self) :
+        slow = self
+        fast = self.nextNode
+        while fast and fast.nextNode :
+            slow = slow.nextNode
+            fast = fast.nextNode.nextNode
+            if slow == fast :
+                break
+        if fast == None or fast.nextNode == None :
+            return None
+        
+        slow = self
+        fast = fast.nextNode
+        while slow != fast :
+            slow = slow.nextNode
+            fast = fast.nextNode
+        
+        return fast.data
