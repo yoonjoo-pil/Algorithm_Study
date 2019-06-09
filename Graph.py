@@ -176,7 +176,7 @@ if __name__ == "__main__" :
 def is_bst(root, minval=None, maxval=None):
     if not root:
         return True
-    if minval and root.vertex > minval :
+    if minval and root.vertex < minval :
         return False
     if maxval and root.vertex > maxval :
         return False
