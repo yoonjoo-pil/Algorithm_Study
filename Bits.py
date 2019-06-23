@@ -58,7 +58,7 @@ def solution(N):
             if temp + 1 + lst[i-1] > max_length :
                 max_length = temp + 1 + lst[i-1]
             temp = lst[i-1]
-    if temp :
+    if temp !=None :
         if temp + 1 + lst[-1] > max_length :
             max_length = temp + 1 + lst[-1]
     if temp == None:
@@ -67,9 +67,9 @@ def solution(N):
 
 '''
 if __name__ == '__main__':
-    print(solution(1775))
-    print(solution(31))
-    print(solution(100))
+    print(solution(799))
+    #print(solution(31))
+    #print(solution(100))
 '''
 
 #5.5
@@ -93,13 +93,15 @@ if __name__ == '__main__':
     print(solution_6(15,20))
 '''
 
-#5.7 수정중
+#5.7
 def solution_7(N):
-    pattern = 12297829382473034410
-    N = pattern & N
-    pattern <<= pattern
-    N = pattern & N
-    return N
+    pattern = int("10"*32,2)
+    print(((N & pattern)<<1))
+    print(((N & (pattern<<1))>>1))
+    return ((N & pattern)<<1) | ((N & (pattern<<1))>>1)
 
+'''
 if __name__ == '__main__':
-    print(solution_7(10))
+    print(solution_7(23))
+    print(solution_7(16))
+'''
