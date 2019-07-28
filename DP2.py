@@ -39,6 +39,23 @@ def parenthesis(left, right, string, index):
 def make_paren(n):
     string = [0]*(2*n)
     parenthesis( n,n,string,0)
-
+'''
 if __name__ == '__main__':
     make_paren(4)
+'''
+
+def coin(n):
+    coins = [1,5,10,25]
+    ans = [1] + [0]*n
+    
+    for i in range(4):
+        for j in range(1,n+1):
+             if j >= coins[i]:
+                ans[j] += ans[j-coins[i]]
+    return ans[-1]
+
+'''
+if __name__ == '__main__':
+    print(coin(10))
+    print(coin(6))
+'''
