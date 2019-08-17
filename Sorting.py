@@ -21,6 +21,28 @@ if __name__ == '__main__':
     b = [1,3,8]
     print(merge(a,b))
 '''
+
+#10.2 아직 수정중
+def anagram(string_lst):
+    dict_list = []
+    for string in string_lst:
+        temp = dict()
+        for s in string:
+            if s in temp:
+                temp[s] += 1
+            else:
+                temp[s] = 1
+        if temp in dict_list:
+            anagrams = dict_list[temp]
+            anagrams.append(string)
+            dict_list[temp] = anagrams
+        else:
+            dict_list[temp] = [string]
+    print(dict_list)
+'''
+if __name__ == '__main__':
+    anagram(["abcd","egf","bcda","rf","fge"])
+'''
 #10.3
 def sol_3(lst, item):
     n = len(lst)
@@ -41,11 +63,91 @@ def search_3(lst, item, start, end):
     
     else:
         if lst[mid]<=item and lst[end]>=item:
-            return search_3(lst,item.mid+1,end)
+            return search_3(lst,item,mid+1,end)
         
         else:
             return search_3(lst, item, start, mid-1)
 
+'''
 if __name__ == '__main__':
     sol_3([3,5,7,10,1,2],10)
     sol_3([4,5,6,10,11,23,1,3],5)
+    sol_3([15,16,19,20,25,1,3,4,5,7,10,14],5)
+'''
+
+#10.4
+class Listy():
+    def __init__(self, lst):
+        self.lst = lst
+    def elementAt(self,i):
+        if 0<=i<=len(self.lst):
+            return self.lst[i]
+        return -1
+
+def sol_4(listy, x):
+    start, i = 0, 0
+    while True:
+        temp = listy.elementAt(i**2)
+        if temp == x :
+            return i**2
+        elif temp == -1 :
+            end = i**2
+            break
+        elif temp > x :
+            end = i**2 - 1
+            break
+        elif temp < x :
+            start = i**2 + 1
+        i += 1
+    
+    while start < end :
+        mid = (start + end)//2
+        temp = listy.elementAt(mid)
+        if temp  == x:
+            return mid
+        elif temp > x :
+            end = mid - 1
+        else :
+            start = mid + 1
+    return "No item"
+
+'''
+if __name__ == '__main__':
+    listy = Listy([1,3,5,7,9,11,13,20])
+    print(sol_4(listy, 5))
+    print(sol_4(listy, 20))
+'''
+
+#10.5
+def sol_5(target, lst,start=0,end=None):
+    if end == None:
+        end = len(lst)
+    mid = (start+end)//2
+    if start > end :
+        return -1
+    if lst[mid] == "":
+        left = mid-1
+        right = mid+1
+        while True:
+            if left < start and right > end:
+                return -1
+            elif left >= start and lst[left]!="":
+                mid = left
+                break
+            elif right<=end and lst[right]!="":
+                mid = right
+                break
+            left -= 1
+            right +=1
+    
+    if lst[mid] == target :
+        return mid
+    elif lst[mid] < target :
+        return sol_5(target, lst,mid+1,end)
+    else:
+        return sol_5(target,lst,start,mid-1)
+    
+'''
+if __name__ == "__main__":
+    print(sol_5("banana",["","","a","abc","banana","","pineapple"]))
+'''
