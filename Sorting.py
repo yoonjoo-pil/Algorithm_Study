@@ -169,20 +169,30 @@ if __name__ == '__main__':
     print(sol_8([1,1,3,5,6,7,8,9,9,4]))
 '''
 
-#10.9
+#10.9 무한 loop 수정 필요
 def sol_9(mat,target):
     row, col = 0, 0
-    i, j = 0, 0
-    while row < len(mat)-1 and col < len(mat[0])-1:
-        if mat[row][col+1] == target :
-            return (row,col+1)
-        elif mat[row][col+1] < target :
-            col += 1
-        
-        if mat[row+1][col] == target:
-            return (row+1,col)
-        elif mat[row+1][col] < target :
-            row += 1
+    row_index, col_index = 0, 0
+    
+    while row < len(mat) and col < len(mat[0]):
+        print(row,col)
+        if mat[row][col_index] == target:
+            return (row,col_index)
+        elif mat[row][col_index] < target:
+            if col_index+1 < len(mat[0]):
+                col_index += 1
+        else:
+            if row- 1 >= 0:
+                row -= 1
+        if mat[row_index][col] ==target:
+            return (row_index,col)
+        elif mat[row_index][col]<target:
+            if row_index + 1 < len(mat):
+                row_index += 1
+        else:
+            if col - 1 >= 0 :
+                col-= 1
+    return False
 
 #10.11
 def sol_11(lst):
