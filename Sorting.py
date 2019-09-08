@@ -149,5 +149,49 @@ def sol_5(target, lst,start=0,end=None):
     
 '''
 if __name__ == "__main__":
-    print(sol_5("banana",["","","a","abc","banana","","pineapple"]))
+    print(sol_5("ban",["","","a","abc","banana","","pineapple"]))
+'''
+
+#10.8
+def sol_8(lst):
+    n= len(lst)
+    check = [None]*n
+    ans = []
+    for i in range(n):
+        temp = lst[i]
+        if not check[temp-1]:
+            check[temp-1] = 1
+            ans.append(temp)
+    return ans
+
+'''
+if __name__ == '__main__':
+    print(sol_8([1,1,3,5,6,7,8,9,9,4]))
+'''
+
+#10.9
+def sol_9(mat,target):
+    row, col = 0, 0
+    i, j = 0, 0
+    while row < len(mat)-1 and col < len(mat[0])-1:
+        if mat[row][col+1] == target :
+            return (row,col+1)
+        elif mat[row][col+1] < target :
+            col += 1
+        
+        if mat[row+1][col] == target:
+            return (row+1,col)
+        elif mat[row+1][col] < target :
+            row += 1
+
+#10.11
+def sol_11(lst):
+    lst.sort()
+    for i in range(1,len(lst),2):
+        lst[i], lst[i-1] = lst[i-1], lst[i]
+    return lst
+
+'''
+if __name__ == '__main__':
+    print(sol_11([2,4,6,1,3,5]))
 '''
